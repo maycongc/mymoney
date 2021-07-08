@@ -7,14 +7,16 @@ export type ThemeContextProps = {
   theme: typeof lightTheme;
 };
 
-export const ThemeContext = createContext({} as ThemeContextProps);
-
-type ContextProps = {
+type ThemeContextProviderProps = {
   children: ReactNode;
 };
 
-export function ThemeContextProvider({ children }: ContextProps): JSX.Element {
-  const [theme, setTheme] = useState(lightTheme);
+export const ThemeContext = createContext({} as ThemeContextProps);
+
+export function ThemeContextProvider({
+  children,
+}: ThemeContextProviderProps): JSX.Element {
+  const [theme] = useState(lightTheme);
 
   return (
     <ThemeContext.Provider value={{ theme }}>
