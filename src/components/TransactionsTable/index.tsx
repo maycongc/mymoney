@@ -1,6 +1,19 @@
+import { useTransactions } from '../../hooks/useTransactions';
 import { TransactionTableWrapper } from './styles';
 
 export function TransactionsTable(): JSX.Element {
+  const { transactions } = useTransactions();
+
+  const handleCurrency = new Intl.NumberFormat('pt-br', {
+    style: 'currency',
+    currency: 'brl',
+  });
+
+  const handleDate = new Intl.DateTimeFormat('pt-br', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  });
+
   return (
     <TransactionTableWrapper>
       <table>
@@ -13,19 +26,16 @@ export function TransactionsTable(): JSX.Element {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Desenvolvimento do site</td>
-            <td className="deposit">R$ 12.000,00</td>
-            <td>Venda</td>
-            <td>13/04/2021</td>
-          </tr>
-
-          <tr>
-            <td>Desenvolvimento do site</td>
-            <td className="withdraw">R$ -1.500,00</td>
-            <td>Venda</td>
-            <td>13/04/2021</td>
-          </tr>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={transaction.type}>
+                {handleCurrency.format(transaction.amount)}
+              </td>
+              <td>{transaction.category}</td>
+              <td>{handleDate.format(new Date(transaction.createdAt))}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </TransactionTableWrapper>
